@@ -53,7 +53,7 @@ int main() {
                 // Choice 1 is search for a value and return an index if present
                 result = searchArray(currArray);
                 if (result == -1) {
-                    cout << "Entered value not found." << endl;
+                    cout << "Entered value not found." << endl << endl;
                 }
                 else {
                     cout << "Search successful. Value at index " << result << endl << endl;
@@ -71,12 +71,14 @@ int main() {
                 string values = replaceValue(currArray, choice);
                 cout << values << endl;
                 printCurrArray(currArray);
+                cout << endl;
             }
             else if (choice == 3) {
                 cout << "Please type the number you would like to add to the end of the array." << endl;
                 choice = getUserInput();
                 arrayIncrease(currArray, choice);
                 printCurrArray(currArray);
+                cout << endl;
             }
             else if (choice == 4) {
                 // Choice 4 is remove value at index
@@ -89,6 +91,7 @@ int main() {
                 }
                 removeValue(currArray, choice);
                 printCurrArray(currArray);
+                cout << endl;
             }
             else if (choice == 5) {
                 continue;
@@ -97,6 +100,7 @@ int main() {
         else if (choice == 3) {
             // Choice 3 is print array.
             printCurrArray(currArray);
+            cout << endl;
         }
         else if (choice == 4) { doExit = true; }
     }

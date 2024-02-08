@@ -1,6 +1,7 @@
 #include "functions.h"
 
 void openMainMenu() {
+    cout << endl;
     cout << setw(7) << "Main Menu" << endl;
     cout << "Please choose from the following options:" << endl;
     cout << "(Use option number)" << endl << endl;
@@ -105,13 +106,23 @@ void addNewArray(ifstream& file, int* array) {
 void arrayIncrease(int* array, int addNum) {
     // Bringing in a int* since passing by reference isn't allowed for int arrays.
     int i = 0;
-    while (array[i] != 0) {
-        ++i;
+    try {
+        while (array[i] != 0) {
+            ++i;
+            if (i == 13) {
+                throw logic_error("Trying to write out-of-boundary. Cannot add new value.");
+            }
+        }
     }
-    if (array[i] == 0 && array[i + 1] == 0) {
+    catch (const logic_error& e) {
+        cout << "ERROR: " << e.what() << endl << endl;
+        return;
+    }
+    if (array[i] == 0 && array[i + 1] == 0 && i < 14) {
         array[i] = addNum;
     }
     else { ++i; }
+    
     return;
 }
 
@@ -144,7 +155,7 @@ void printCurrArray(int* currArray) {
             cout << currArray[i] << " ==> ";
         }
         else {
-            cout << endl;
+            cout << endl << endl;
             return;
         }
     }
@@ -187,23 +198,24 @@ void removeValue(int* currArray, int index) {
     // Removes a value at index provided
     int i;
     currArray[index] = 0;
-    for (i = index; i < 14; ++i) {
+    for (i = index; i < 13; ++i) {
         // First case, val at index == 0, next val != 0. Value gets replaced, index gets incremented
-        if (currArray[index] == 0 && currArray[index + 1] != 0 && currArray[index] != currArray[index - 1]) {
-            currArray[index] = currArray[index + 1];
+        if (currArray[i] == 0 && currArray[i + 1] != 0 && currArray[i] != currArray[i - 1]) {
+            currArray[i] = currArray[i + 1];
         }
         // Next case, val at index -1 was replaced by val at index. Val at index + 1 != 0 (not end of array)
-        else if (currArray[index] == currArray[index - 1] && currArray[index + 1] != 0 && index + 1 < 14) {
-            currArray[index] = currArray[index + 1];
+        else if (currArray[i] == currArray[i - 1] && currArray[i + 1] != 0 && i < 13) {
+            currArray[i] = currArray[i + 1];
         }
         // Next case, val at index - 1 was replaced by val curr at index, and val at index + 1 == 0 (might be end) 
-        else if (currArray[index] == currArray[index - 1] && index + 1 < 14 && currArray[index + 1] == 0) {
-            if (currArray[index + 2] == 0) { // End of array values reached (next two values are zero)
-                currArray[index] = currArray[index + 1];
+        else if (currArray[i] == currArray[i - 1] && currArray[i + 1] == 0 && i < 13) {
+            if (currArray[i + 2] == 0) { // End of array values reached (next two values are zero)
+                currArray[i] = currArray[i + 1];
+                currArray[i + 1];
                 break;
             }
-            else if (currArray[index + 2] != 0) { // Not end, val at index + 1 was replaced with 0, by user
-                currArray[index] = currArray[index + 1];
+            else if (currArray[i + 2] != 0) { // Not end, val at index + 1 was replaced with 0, by user
+                currArray[i] = currArray[i + 1];
             }
         }
         else { break; }
